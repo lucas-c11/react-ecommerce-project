@@ -1,9 +1,11 @@
 import { CheckoutHeader } from "./CheckoutHeader";
+import CartFavicon from "../../assets/cart-favicon.png";
 import "./Checkout.css";
 
 export function Checkout() {
     return (
         <>
+            <link rel="icon" href={CartFavicon} />
             <title>Checkout</title>
             <CheckoutHeader />
             <div className="checkout-page">
