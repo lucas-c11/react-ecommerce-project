@@ -1,15 +1,26 @@
+import { useEffect, useState } from "react"
+import axios from "axios"
 import { Header } from "../components/Header"
 import { products } from "../../starting-code/data/products"
 import HomeFavicon from "../assets/home-favicon.png"
 import Checkmark from "../assets/images/icons/checkmark.png"
 import "./HomePage.css"
 export function HomePage() {
+    const [products, setProducts] = useState([])
+    useEffect(() => {
+        axios.get("http://localhost:3000/api/products")
+            .then((response) =>{
+                setProducts(response.data)
+            })
+    }, [])
+    
+
     return (
         <>
             <link rel="icon" href={HomeFavicon} />
             <title>Ecommerce Project</title>
             <Header />
-            <div className="home-page">
+            <div className="home-page"> 
                 <div className="products-grid">
                     {products.map((product) => {
                         return (
