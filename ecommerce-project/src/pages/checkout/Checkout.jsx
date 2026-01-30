@@ -1,9 +1,18 @@
+import { useState, useEffect } from "react"
+import axios from "axios"
 import { CheckoutHeader } from "./CheckoutHeader";
 import { formatMoney } from "../../utils/money"
 import CartFavicon from "../../assets/cart-favicon.png";
 import "./Checkout.css";
 
 export function Checkout({ cart }) {
+    const [deliveryOptions, setDeliveryOptions] = useState([]);
+    useEffect(() => {
+        axios.get("/api/delivery-options?expand=estimatedDeliveryTime")
+            .then((response) => {
+                setDeliveryOptions(response.data)
+            })
+    }, [])
     return (
         <>
             <link rel="icon" href={CartFavicon} />
@@ -49,6 +58,25 @@ export function Checkout({ cart }) {
                                             <div className="delivery-options-title">
                                                 Choose a delivery option:
                                             </div>
+
+                                            {deliveryOptions.map((deliveryOption) => {
+                                                return (
+                                                    <div key={deliveryOption.id} className="delivery-option">
+                                                        <input type="radio" checked
+                                                            className="delivery-option-input"
+                                                            name="delivery-option-1" />
+                                                        <div>
+                                                            <div className="delivery-option-date">
+                                                                Tuesday, June 21
+                                                            </div>
+                                                            <div className="delivery-option-price">
+                                                                FREE Shipping
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
+
                                             <div className="delivery-option">
                                                 <input type="radio" checked
                                                     className="delivery-option-input"
