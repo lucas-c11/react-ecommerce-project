@@ -2,10 +2,10 @@ import { useState, useEffect, Fragment } from "react"
 import dayjs from "dayjs";
 import axios from "axios"
 import { Link } from "react-router"
-import { Header } from "../components/Header"
-import { formatMoney } from "../utils/money"
-import BuyAgainIcon from "../assets/images/icons/buy-again.png"
-import OrdersFavicon from "../assets/orders-favicon.png"
+import { Header } from "../../components/Header"
+import { formatMoney } from "../../utils/money"
+import BuyAgainIcon from "../../assets/images/icons/buy-again.png"
+import OrdersFavicon from "../../assets/orders-favicon.png"
 import "./Orders.css"
 
 export function Orders({ cart }) {
