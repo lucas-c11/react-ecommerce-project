@@ -16,7 +16,7 @@ function App() {
       const response = await axios.get("/api/cart-items?expand=product")
       setCart(response.data)
     }
-    fetchAppData
+    fetchAppData();
   })
 
 
