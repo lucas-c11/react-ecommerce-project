@@ -1,11 +1,27 @@
+import { useEffect, useState } from "react"
+import { Link, useParams } from "react-router"
+import axios from "axios"
+import dayjs from "dayjs"
 import { Header } from "../components/Header"
-import { Link } from "react-router"
 import "./Tracking.css"
-export function Tracking() {
+export function Tracking({ cart }) {
+    const { orderId, productId } = useParams();
+    const [order, setOrder] = useState(null);
+
+    useEffect(() => {
+        const fetchTrackingData = async () => {
+            const response = await axios.get(`/api/orders/${orderId}?expand=products`);
+            setOrder(response.data);
+        }
+        fetchTrackingData();
+
+    }, [orderId])
+
+    if (!order) { return null; }
     return (
         <>
             <title>Tracking</title>
-            <Header />
+            <Header cart={cart} />
             <div className="tracking-page">
                 <div className="order-tracking">
                     <Link className="back-to-orders-link link-primary" to="/orders">
@@ -13,19 +29,18 @@ export function Tracking() {
                     </Link>
 
                     <div className="delivery-date">
-                        Arriving on Monday, June 13
+                        Arriving on {dayjs(order.products.find(product => product.productId === productId).estimatedDeliveryTimeMs).format("dddd, MMMM D")}
                     </div>
 
                     <div className="product-info">
-                        Black and Gray Athletic Cotton Socks - 6 Pairs
+                        {order.products.find(product => product.productId === productId).product.name}
                     </div>
 
                     <div className="product-info">
-                        Quantity: 1
+                        Quantity: {order.products.find(product => product.productId === productId).quantity}
                     </div>
 
-                    <img className="product-image" src="images/products/athletic-cotton-socks-6-pairs.jpg" />
-
+                    <img className="product-image" src={order.products.find(product => product.productId === productId).product.image} />
                     <div className="progress-labels-container">
                         <div className="progress-label">
                             Preparing
