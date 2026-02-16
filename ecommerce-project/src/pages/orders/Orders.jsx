@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { Header } from "../../components/Header"
-import { OrderDetailsGrid } from "./OrderDetailsGrid";
-import { OrderHeader } from "./OrderHeader";
 import { OrdersGrid } from "./OrdersGrid";
 import OrdersFavicon from "../../assets/orders-favicon.png"
 import "./Orders.css"
 
-export function Orders({ cart }) {
+export function Orders({ cart, loadCart }) {
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
@@ -31,7 +29,7 @@ export function Orders({ cart }) {
                 {orders.map((order) => {
                     return (
                         <div key={order.id} className="order-container">
-                            <OrdersGrid order={order}/>
+                            <OrdersGrid order={order} loadCart={loadCart} />
                         </div>
                     )
                 })}
