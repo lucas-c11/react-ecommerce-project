@@ -63,7 +63,5 @@ describe("HomePage Component", () => {
             within(productContainers[1])
             .getByText("Intermediate Size Basketball")
         ).toBeInTheDocument();
-        
-
     })
 })
