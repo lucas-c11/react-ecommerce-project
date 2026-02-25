@@ -64,4 +64,42 @@ describe("HomePage Component", () => {
             .getByText("Intermediate Size Basketball")
         ).toBeInTheDocument();
     })
+
+    it("Add to cart buttons", async () => {
+        render(
+            <MemoryRouter>
+                <HomePage cart={[]} loadCart={loadCart} />
+            </MemoryRouter>
+        )
+
+        const user = userEvent.setup();
+        const productContainers = await screen.findAllByTestId("product-container");
+
+        let quantitySelect = within(productContainers[0]).getByTestId("quantity-select");
+        let addToCart = within(productContainers[0]).getByTestId("add-to-cart-button")
+        await user.selectOptions(quantitySelect, "2");
+        await user.click(addToCart)
+        expect(axios.post).toHaveBeenNthCalledWith(
+            1, 
+            "/api/cart-items",
+            {
+                productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+                quantity:2
+            }
+        )
+        quantitySelect = within(productContainers[1]).getByTestId("quantity-select");
+        addToCart = within(productContainers[1]).getByTestId("add-to-cart-button");
+        await user.selectOptions(quantitySelect, "3");
+        await user.click(addToCart)
+        expect(axios.post).toHaveBeenNthCalledWith(
+            2, 
+            "/api/cart-items",
+            {
+                productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
+                quantity:3
+            }
+        )
+
+        expect(loadCart).toHaveBeenCalledTimes(2);
+    })
 })
